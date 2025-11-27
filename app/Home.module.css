@@ -1,0 +1,76 @@
+.container {
+  max-width: 1440px;
+  padding: 0 120px;
+  position: relative;
+  z-index: 1;
+}
+
+/* app/Home.module.css */
+
+.main {
+  min-height: calc(100vh - 64px); /* примерная высота хедера */
+  background-color: #101828; /* тёмный фон под фото */
+}
+
+.hero {
+  position: relative;
+  max-width: 1184px;
+  margin: 32px auto 40px;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+/* фон-картинка */
+.heroImage {
+  position: absolute;
+  inset: 0;
+  background-image: url("/home/home-picture.jpg"); /* картинка в public/home */
+  background-size: cover;
+  background-position: center;
+  filter: brightness(0.8);
+}
+
+/* затемнение снизу, чтобы текст читался */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.1) 0%,
+    rgba(0, 0, 0, 0.7) 100%
+  );
+}
+
+.heroContent {
+  position: relative;
+  z-index: 1;
+  padding: 220px 80px 120px;
+  text-align: center;
+  color: #ffffff;
+}
+
+.title {
+  margin: 0 0 16px;
+  font-size: 40px;
+  font-weight: 600;
+}
+
+.subtitle {
+  margin: 0 0 32px;
+  font-size: 18px;
+}
+
+.cta {
+  padding: 14px 40px;
+  border-radius: 12px;
+  background-color: var(--color-primary);
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 500;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.cta:hover {
+  background-color: var(--color-primary-hover);
+}

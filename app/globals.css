@@ -1,0 +1,73 @@
+:root {
+  --white: #ffffff;
+  --inputs: #f7f7f7;
+  --badges: #f2f4f7;
+  --gray-light: #dadde1;
+  --button-hover: #0b44cd;
+  --button: #3470ff;
+  --grey: #8d929a;
+  --main: #101828;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  font-family: var();
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.5;
+  background-color: var(--white);
+  color: var(--main);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: currentColor;
+  text-decoration: none;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+a:hover {
+  opacity: 0.8;
+}
+
+button {
+  cursor: pointer;
+  font: inherit;
+  background: none;
+  border: none;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.main {
+  flex: 1;
+}

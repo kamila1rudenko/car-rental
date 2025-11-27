@@ -1,0 +1,45 @@
+/* components/Header/Header.module.css */
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e4e4e4;
+}
+
+.inner {
+  max-width: 1184px;
+  margin: 0 auto;
+  padding: 18px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.logoPrimary {
+  color: #101828;
+}
+
+.logoAccent {
+  color: var(--color-primary);
+}
+
+.nav {
+  display: flex;
+  gap: 32px;
+}
+
+.navLink {
+  font-size: 14px;
+  color: #475467;
+}
+
+.navLinkActive {
+  color: var(--color-primary);
+}
