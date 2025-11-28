@@ -1,0 +1,29 @@
+.wrapper {
+  padding: 24px 24px 40px;
+}
+
+.inner {
+  max-width: 1184px;
+  margin: 0 auto;
+}
+
+.loadMore {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.button {
+  height: 44px;
+  padding: 0 28px;
+  border-radius: 14px;
+  border: 1px solid var(--accent);
+  background-color: #fff;
+  color: var(--accent);
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: var(--accent);
+  color: #fff;
+}
