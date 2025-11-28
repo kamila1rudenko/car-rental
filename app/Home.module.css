@@ -5,6 +5,12 @@
   background-color: var(--color-bg);
 }
 
+.container {
+  max-width: 1184px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
 .main {
   flex: 1;
   display: flex;
@@ -75,6 +81,7 @@
   font-size: 16px;
   font-weight: 600;
   text-align: center;
+  color: #ffffff;
   transition: background-color 0.2s ease;
 }
 

@@ -15,7 +15,7 @@ interface Props {
 }
 
 export function CarInfoClient({ id }: Props) {
-  const { data, isLoading, isError } = useQuery<Car>({
+  const { data, isLoading, isError, error } = useQuery<Car>({
     queryKey: ["car", id],
     queryFn: async () => {
       const { data } = await clientApi.get<Car>(`/cars/${id}`);
@@ -29,11 +29,15 @@ export function CarInfoClient({ id }: Props) {
   const [comment, setComment] = useState("");
 
   if (isLoading) return <Loader />;
-  if (isError || !data) return <ErrorMessage text="Car not found" />;
+  if (isError || !data)
+    return (
+      <ErrorMessage
+        text={error instanceof Error ? error.message : "Car not found"}
+      />
+    );
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-
     toast.success("Car booked successfully!");
     setName("");
     setEmail("");
@@ -79,7 +83,7 @@ export function CarInfoClient({ id }: Props) {
             <li>Engine Size: {data.engineSize}</li>
           </ul>
 
-          <p className={styles.specTitle}>Accessories & functionalities:</p>
+          <p className={styles.specTitle}>Accessories &amp; functionalities:</p>
           <ul className={styles.funcList}>
             {data.accessories.map((item) => (
               <li key={item}>{item}</li>

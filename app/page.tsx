@@ -7,7 +7,7 @@ export default function HomePage() {
     <section className={styles.hero}>
       <div className={styles.heroImageWrapper}>
         <Image
-          src="/public/hero/Picture.jpg"
+          src="/hero/Picture.jpg"
           alt="Fast car on the highway"
           fill
           priority

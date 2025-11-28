@@ -2,7 +2,7 @@
 
 import styles from "./CatalogPage.module.css";
 import { useState, useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { clientApi } from "@/lib/api/clientApi";
 import type { CarsResponse } from "@/types/car";
 import { Filters } from "@/components/Filters/Filters";
@@ -19,7 +19,7 @@ export function CatalogClient() {
 
   const queryKey = ["cars", { filters, page }];
 
-  const { data, isLoading, isError, refetch, isFetching } =
+  const { data, isLoading, isError, refetch, isFetching, error } =
     useQuery<CarsResponse>({
       queryKey,
       queryFn: async () => {
@@ -36,7 +36,7 @@ export function CatalogClient() {
         });
         return data;
       },
-      keepPreviousData: true,
+      placeholderData: keepPreviousData,
     });
 
   useEffect(() => {
@@ -78,10 +78,17 @@ export function CatalogClient() {
     <section className={styles.wrapper}>
       <div className={styles.inner}>
         <Filters onApply={handleApplyFilters} />
+
         {isLoading && !carsAcc && <Loader />}
-        {isError && <ErrorMessage />}
+
+        {isError && !isLoading && (
+          <ErrorMessage
+            text={error instanceof Error ? error.message : undefined}
+          />
+        )}
 
         {!isLoading && !isError && cars.length === 0 && <MessageNoCars />}
+
         {cars.length > 0 && <CarsList cars={cars} />}
 
         {carsAcc && carsAcc.page < carsAcc.totalPages && (

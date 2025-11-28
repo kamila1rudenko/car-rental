@@ -1,214 +1,107 @@
-// components/Filters/Filters.tsx
-import { useState, useEffect, useRef } from "react";
-import css from "./Filters.module.css";
+"use client";
+
+import { FormEvent, useState } from "react";
+import styles from "./Filters.module.css";
 import { useCarStore } from "@/lib/api/store/useCarsStore";
+import { useQuery } from "@tanstack/react-query";
+import { clientApi } from "@/lib/api/clientApi";
 
-type FiltersProps = {
-  brands?: string[];
-};
+interface FiltersProps {
+  onApply: () => void;
+}
 
-const Filters = ({ brands }: FiltersProps) => {
-  const [isOpenBrand, setIsOpenBrand] = useState(false);
-  const [isOpenPrice, setIsOpenPrice] = useState(false);
+export function Filters({ onApply }: FiltersProps) {
+  const { filters, setFilters, resetFilters } = useCarStore();
 
-  const filters = useCarStore((state) => state.filters);
-  const editFilters = useCarStore((state) => state.editFilters);
+  const [localMin, setLocalMin] = useState(filters.minMileage);
+  const [localMax, setLocalMax] = useState(filters.maxMileage);
 
-  const [newFilters, setNewFilters] = useState({ ...filters });
+  const { data: brands } = useQuery<string[]>({
+    queryKey: ["brands"],
+    queryFn: async () => {
+      const { data } = await clientApi.get<string[]>("/brands");
+      return data;
+    },
+  });
 
-  const dropdownRefBrand = useRef<HTMLDivElement>(null);
-  const dropdownRefPrice = useRef<HTMLDivElement>(null);
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
 
-  useEffect(() => {
-    setNewFilters({ ...filters });
-  }, [filters]);
+    setFilters({
+      minMileage: localMin,
+      maxMileage: localMax,
+    });
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as Node;
-
-      if (
-        dropdownRefBrand.current &&
-        !dropdownRefBrand.current.contains(target) &&
-        isOpenBrand
-      ) {
-        setIsOpenBrand(false);
-      }
-
-      if (
-        dropdownRefPrice.current &&
-        !dropdownRefPrice.current.contains(target) &&
-        isOpenPrice
-      ) {
-        setIsOpenPrice(false);
-      }
-    };
-
-    const timeoutId = setTimeout(() => {
-      document.addEventListener("click", handleClickOutside);
-    }, 0);
-
-    return () => {
-      clearTimeout(timeoutId);
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, [isOpenBrand, isOpenPrice]);
-
-  const onSubmitFiltersClick = () => {
-    editFilters(newFilters);
+    onApply();
   };
 
-  const formatNumber = (value: string) => {
-    const num = value.replace(/\D/g, "");
-    return num ? Number(num).toLocaleString("en-US") : "";
+  const handleReset = () => {
+    resetFilters();
+    setLocalMin("");
+    setLocalMax("");
+    onApply();
   };
-
-  const handleMileageChange = (
-    field: "minMileage" | "maxMileage",
-    value: string
-  ) => {
-    const numericValue = value.replace(/\D/g, "");
-    setNewFilters((prev) => ({ ...prev, [field]: numericValue }));
-  };
-
-  const onClickDropdown = (field: "brand" | "rentalPrice", value: string) => {
-    setNewFilters((prev) => ({ ...prev, [field]: value }));
-  };
-
-  const priceLabel = newFilters.rentalPrice
-    ? `To $${newFilters.rentalPrice}`
-    : "Choose a price";
-
-  const brandLabel = newFilters.brand || "Choose a brand";
 
   return (
-    <div className={css.filtersWrapper}>
-      <div className={css.filters}>
-        {/* BRAND */}
-        <div className={css.dropdown} ref={dropdownRefBrand}>
-          <p className={css.dropdownLabel}>Car brand</p>
-          <button
-            type="button"
-            className={css.dropdownToggle}
-            onClick={() => setIsOpenBrand((prev) => !prev)}
+    <form className={styles.filters} onSubmit={handleSubmit}>
+      <div className={styles.row}>
+        <div className={styles.field}>
+          <label>Car brand</label>
+          <select
+            value={filters.brand ?? ""}
+            onChange={(e) => setFilters({ brand: e.target.value || null })}
           >
-            {brandLabel}
-            <svg className={css.arrow}>
-              <use
-                href={`/sprite.svg#${isOpenBrand ? "icon-arrow-up" : "icon-arrow-down"}`}
-              />
-            </svg>
-          </button>
-
-          {isOpenBrand && (
-            <ul className={css.dropdownMenu}>
-              <li
-                className={css.dropdownItem}
-                onClick={() => onClickDropdown("brand", "")}
-              >
-                All brands
-              </li>
-              {brands?.map((brand) => (
-                <li
-                  key={brand}
-                  className={css.dropdownItem}
-                  onClick={() => onClickDropdown("brand", brand)}
-                >
-                  {brand}
-                </li>
-              ))}
-            </ul>
-          )}
+            <option value="">Choose a brand</option>
+            {brands?.map((brand) => (
+              <option key={brand} value={brand}>
+                {brand}
+              </option>
+            ))}
+          </select>
         </div>
 
-        {/* PRICE */}
-        <div className={css.dropdown} ref={dropdownRefPrice}>
-          <p className={css.dropdownLabel}>Price / 1 hour</p>
-          <button
-            type="button"
-            className={css.dropdownToggle}
-            onClick={() => setIsOpenPrice((prev) => !prev)}
+        <div className={styles.field}>
+          <label>Price / 1 hour</label>
+          <select
+            value={filters.rentalPrice ?? ""}
+            onChange={(e) =>
+              setFilters({ rentalPrice: e.target.value || null })
+            }
           >
-            {priceLabel}
-            <svg className={css.arrow}>
-              <use
-                href={`/sprite.svg#${isOpenPrice ? "icon-arrow-up" : "icon-arrow-down"}`}
-              />
-            </svg>
-          </button>
-
-          {isOpenPrice && (
-            <ul className={css.dropdownMenu}>
-              <li
-                className={css.dropdownItem}
-                onClick={() => onClickDropdown("rentalPrice", "")}
-              >
-                All prices
-              </li>
-              {Array.from({ length: 17 }, (_, i) => (i + 1) * 10).map(
-                (price) => (
-                  <li
-                    key={price}
-                    className={css.dropdownItem}
-                    onClick={() =>
-                      onClickDropdown("rentalPrice", price.toString())
-                    }
-                  >
-                    {price}
-                  </li>
-                )
-              )}
-            </ul>
-          )}
+            <option value="">Choose a price</option>
+            {[30, 40, 50, 60, 70, 80].map((price) => (
+              <option key={price} value={String(price)}>
+                To ${price}
+              </option>
+            ))}
+          </select>
         </div>
 
-        {/* MILEAGE */}
-        <div className={css.mileage}>
-          <label htmlFor="minMileage" className={css.mileageLabel}>
-            Car mileage / km
-          </label>
-          <div className={css.mileageInputs}>
-            <div className={css.mileageInputWrapper}>
-              <span className={css.mileagePrefix}>From&nbsp;</span>
-              <input
-                type="text"
-                className={css.mileageInput}
-                id="minMileage"
-                name="minMileage"
-                pattern="[0-9,]*"
-                value={formatNumber(newFilters.minMileage || "")}
-                onChange={(e) =>
-                  handleMileageChange("minMileage", e.target.value)
-                }
-              />
-            </div>
-            <div className={css.mileageInputWrapper}>
-              <span className={css.mileagePrefix}>To&nbsp;</span>
-              <input
-                type="text"
-                className={css.mileageInput}
-                id="maxMileage"
-                name="maxMileage"
-                pattern="[0-9,]*"
-                value={formatNumber(newFilters.maxMileage || "")}
-                onChange={(e) =>
-                  handleMileageChange("maxMileage", e.target.value)
-                }
-              />
-            </div>
+        <div className={styles.fieldGroup}>
+          <label>Car mileage / km</label>
+          <div className={styles.mileageInputs}>
+            <input
+              type="number"
+              placeholder="From"
+              value={localMin}
+              onChange={(e) => setLocalMin(e.target.value)}
+            />
+            <input
+              type="number"
+              placeholder="To"
+              value={localMax}
+              onChange={(e) => setLocalMax(e.target.value)}
+            />
           </div>
         </div>
 
-        <button
-          type="button"
-          className={css.searchButton}
-          onClick={onSubmitFiltersClick}
-        >
+        <button type="submit" className={styles.searchBtn}>
           Search
         </button>
+        <button type="button" className={styles.resetBtn} onClick={handleReset}>
+          Reset
+        </button>
       </div>
-    </div>
+    </form>
   );
-};
-
-export default Filters;
+}
