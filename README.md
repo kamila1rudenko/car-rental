@@ -68,33 +68,37 @@ git clone https://github.com/kamila1rudenko/car-rental
 cd car-rental
 ```
 
-# База для клієнтських запитів (React Query, axios)
+## База для клієнтських запитів (React Query, axios)
 
 NEXT_PUBLIC_CAR_API_BASE_URL=https://car-rental-api.goit.global
 
-# База для серверних route handlers (app/api)
+## База для серверних route handlers (app/api)
 
 CAR_API_BASE_URL=https://car-rental-api.goit.global
 
-# Запуск у режимі розробки
+## Запуск у режимі розробки
 
 npm run dev
 
-# або
+### або
 
 yarn dev
 
-# або
+###або
 
 pnpm dev
 
-# Додаток буде доступний за адресою:
+---
+
+## Додаток буде доступний за адресою:
 
 http://localhost:3000
 
 https://car-rental-khaki-nine.vercel.app
 
-# Автор
+---
+
+## Автор
 
 Автор фронтенд-реалізації: [твоє імʼя]
 GitHub: https://github.com/kamila1rudenko
