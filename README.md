@@ -1,36 +1,100 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# car-rental
 
-## Getting Started
+## Короткий опис
 
-First, run the development server:
+**car-rental** — це навчальний веб-застосунок для оренди автомобілів, побудований на **Next.js (App Router)**.  
+Додаток дозволяє переглядати каталог доступних авто, фільтрувати їх, переглядати детальну інформацію про кожен автомобіль, додавати авто в обрані та оформлювати бронювання через форму.
+
+Як джерело даних використовується готовий бекенд API:  
+`https://car-rental-api.goit.global`  
+Документація: `https://car-rental-api.goit.global/api-docs/`.
+
+---
+
+## Основні можливості
+
+- 📋 **Каталог автомобілів**
+  - завантаження списку авто з зовнішнього API;
+  - картки автомобілів з фото, базовими характеристиками та ціною.
+
+- 🔍 **Фільтрація та пошук**
+  - фільтр за брендом (маркою авто);
+  - фільтр за ціною оренди;
+  - фільтр за пробігом / типом (якщо передбачено в ТЗ).
+
+- ⭐ **Обрані автомобілі**
+  - додавання/видалення авто в обране;
+  - збереження обраних у стані клієнта (через store).
+
+- 🚗 **Сторінка детальної інформації**
+  - велике фото авто;
+  - бренд, модель, рік, Id авто (витягнутий з `img`);
+  - місто/країна, пробіг, тип, обʼєм двигуна, витрата пального;
+  - список **Rental Conditions**;
+  - аксесуари та функціонал (accessories & functionalities).
+
+- 📝 **Форма бронювання**
+  - форма з полями: імʼя, email, дата бронювання, коментар;
+  - базова валідація обовʼязкових полів;
+  - повідомлення про успішне відправлення (toast).
+
+- 💅 **UI та адаптивність**
+  - верстка за макетом з використанням **CSS Modules**;
+  - адаптивний інтерфейс для мобільних та десктоп-пристроїв;
+  - SVG-іконки підключені через **SVG sprite**.
+
+---
+
+## Технології
+
+- **Next.js** (App Router)
+- **React**
+- **TypeScript**
+- **@tanstack/react-query** — робота з даними та кешування запитів
+- **Axios** — запити до API
+- **CSS Modules** — стилізація компонентів
+- **Zustand/own store** (`useCarStore`) — зберігання обраних авто
+- **react-hot-toast** — повідомлення (toast)
+- Вбудовані **API routes** Next.js як проксі до зовнішнього бекенду
+
+---
+
+## Встановлення
+
+### 1. Клонування репозиторію
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/kamila1rudenko/car-rental
+cd car-rental
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+# База для клієнтських запитів (React Query, axios)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+NEXT_PUBLIC_CAR_API_BASE_URL=https://car-rental-api.goit.global
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# База для серверних route handlers (app/api)
 
-## Learn More
+CAR_API_BASE_URL=https://car-rental-api.goit.global
 
-To learn more about Next.js, take a look at the following resources:
+# Запуск у режимі розробки
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+npm run dev
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# або
 
-## Deploy on Vercel
+yarn dev
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# або
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+pnpm dev
+
+# Додаток буде доступний за адресою:
+
+http://localhost:3000
+
+https://car-rental-khaki-nine.vercel.app
+
+# Автор
+
+Автор фронтенд-реалізації: [твоє імʼя]
+GitHub: https://github.com/kamila1rudenko
