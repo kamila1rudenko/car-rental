@@ -6,15 +6,13 @@
 }
 
 .hero {
-  width: 100vw;
-  height: 100vh;
   background-image:
     linear-gradient(to bottom, rgba(0, 0, 0, 20%), rgba(0, 0, 0, 20%)),
     url("/hero/Picture.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  padding-top: 536px;
+  padding-top: 436px;
   padding-bottom: 60px;
   overflow-y: auto;
 }

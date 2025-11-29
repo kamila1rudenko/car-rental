@@ -1,8 +1,13 @@
 .list {
   max-width: 1184px;
-  margin: 0 auto 32px;
+  margin: 56px auto 80px;
   padding: 0;
+
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(4, 276px);
+  justify-content: space-between;
+  row-gap: 48px;
+  column-gap: 32px;
+
+  list-style: none;
 }

@@ -1,5 +1,5 @@
-import styles from "./CarsList.module.css";
 import type { Car } from "@/types/car";
+import styles from "./CarsList.module.css";
 import { CarsItem } from "@/components/CarsItem/CarsItem";
 
 interface Props {
@@ -7,6 +7,8 @@ interface Props {
 }
 
 export function CarsList({ cars }: Props) {
+  if (!cars.length) return null;
+
   return (
     <ul className={styles.list}>
       {cars.map((car) => (

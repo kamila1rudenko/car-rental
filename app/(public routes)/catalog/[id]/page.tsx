@@ -1,9 +1,10 @@
 import { CarInfoClient } from "./CarInfoClient";
 
 interface Props {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
-export default function CarDetailsPage({ params }: Props) {
-  return <CarInfoClient id={params.id} />;
+export default async function CarDetailsPage({ params }: Props) {
+  const { id } = await params;
+  return <CarInfoClient id={id} />;
 }
