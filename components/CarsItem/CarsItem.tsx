@@ -19,7 +19,6 @@ export function CarsItem({ car }: Props) {
     toggleFavorite(car);
   };
 
-  // город и страна из address
   const [, cityRaw, countryRaw] = car.address.split(",");
   const city = cityRaw?.trim() ?? "";
   const country = countryRaw?.trim() ?? "";

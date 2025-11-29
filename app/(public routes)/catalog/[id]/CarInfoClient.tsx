@@ -45,7 +45,6 @@ export function CarInfoClient({ id }: Props) {
   const favorite = isFavorite(data.id);
   const cityCountry = data.address.split(",").slice(1).join(",").trim();
 
-  // id из имени файла изображения: "https://.../9582-ai.jpg" -> "9582"
   const imageFileName = data.img.split("/").pop() ?? "";
   const imageId = imageFileName.split("-")[0];
 
@@ -142,9 +141,7 @@ export function CarInfoClient({ id }: Props) {
               </div>
             </div>
 
-            {/* RIGHT COLUMN: info */}
             <div className={styles.rightColumn}>
-              {/* заголовок + Id в одну строку */}
               <div className={styles.titleRow}>
                 <h1 className={styles.carTitle}>
                   {data.brand}&nbsp;

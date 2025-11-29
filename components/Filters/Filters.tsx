@@ -46,7 +46,6 @@ export function Filters({ onApply }: FiltersProps) {
   return (
     <form className={styles.filters} onSubmit={handleSubmit}>
       <div className={styles.inner}>
-        {/* BRAND */}
         <div className={styles.field}>
           <span className={styles.label}>Car brand</span>
           <div className={styles.selectWrapper}>
@@ -65,7 +64,6 @@ export function Filters({ onApply }: FiltersProps) {
           </div>
         </div>
 
-        {/* PRICE */}
         <div className={styles.field}>
           <span className={styles.label}>Price / 1 hour</span>
           <div className={styles.selectWrapper}>
@@ -86,7 +84,6 @@ export function Filters({ onApply }: FiltersProps) {
           </div>
         </div>
 
-        {/* MILEAGE */}
         <div className={styles.fieldGroup}>
           <span className={styles.label}>Car mileage / km</span>
           <div className={styles.mileageWrapper}>
@@ -108,7 +105,6 @@ export function Filters({ onApply }: FiltersProps) {
           </div>
         </div>
 
-        {/* BUTTONS */}
         <button type="submit" className={styles.searchBtn}>
           Search
         </button>
