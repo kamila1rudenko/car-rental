@@ -19,7 +19,7 @@ const Header = () => {
               height="16"
               aria-hidden="true"
             >
-              <use href="/sprite.svg#icon-logo" />
+              <use href="/Logo.svg" />
             </svg>
           </Link>
 

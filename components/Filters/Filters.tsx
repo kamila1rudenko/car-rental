@@ -1,10 +1,10 @@
 "use client";
 
-import { FormEvent, useState } from "react";
 import styles from "./Filters.module.css";
-import { useCarStore } from "@/lib/api/store/useCarsStore";
+import { FormEvent, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { clientApi } from "@/lib/api/clientApi";
+import { useCarStore } from "@/lib/api/store/useCarsStore";
 
 interface FiltersProps {
   onApply: () => void;
@@ -13,23 +13,26 @@ interface FiltersProps {
 export function Filters({ onApply }: FiltersProps) {
   const { filters, setFilters, resetFilters } = useCarStore();
 
+  // Локальные значения пробега – источник правды для инпутов
   const [localMin, setLocalMin] = useState(filters.minMileage);
   const [localMax, setLocalMax] = useState(filters.maxMileage);
 
+  // Бренды тянем прямо отсюда
   const { data: brands } = useQuery<string[]>({
     queryKey: ["brands"],
     queryFn: async () => {
       const { data } = await clientApi.get<string[]>("/brands");
       return data;
     },
+    staleTime: 1000 * 60 * 5,
   });
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
     setFilters({
-      minMileage: localMin,
-      maxMileage: localMax,
+      minMileage: localMin.trim(),
+      maxMileage: localMax.trim(),
     });
 
     onApply();
@@ -39,12 +42,14 @@ export function Filters({ onApply }: FiltersProps) {
     resetFilters();
     setLocalMin("");
     setLocalMax("");
+
     onApply();
   };
 
   return (
     <form className={styles.filters} onSubmit={handleSubmit}>
       <div className={styles.row}>
+        {/* BRAND */}
         <div className={styles.field}>
           <label>Car brand</label>
           <select
@@ -60,6 +65,7 @@ export function Filters({ onApply }: FiltersProps) {
           </select>
         </div>
 
+        {/* PRICE */}
         <div className={styles.field}>
           <label>Price / 1 hour</label>
           <select
@@ -77,6 +83,7 @@ export function Filters({ onApply }: FiltersProps) {
           </select>
         </div>
 
+        {/* MILEAGE */}
         <div className={styles.fieldGroup}>
           <label>Car mileage / km</label>
           <div className={styles.mileageInputs}>
@@ -105,3 +112,5 @@ export function Filters({ onApply }: FiltersProps) {
     </form>
   );
 }
+
+export default Filters;

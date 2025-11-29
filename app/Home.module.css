@@ -1,90 +1,69 @@
-.pageWrapper {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  background-color: var(--color-bg);
-}
-
 .container {
-  max-width: 1184px;
-  margin: 0 auto;
-  padding: 0 24px;
-}
-
-.main {
-  flex: 1;
-  display: flex;
-  justify-content: center;
+  max-width: 1440px;
+  padding: 0 120px;
+  position: relative;
+  z-index: 1;
 }
 
 .hero {
-  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background-image:
+    linear-gradient(to bottom, rgba(0, 0, 0, 20%), rgba(0, 0, 0, 20%)),
+    url("/hero/Picture.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding-top: 536px;
+  padding-bottom: 60px;
+  overflow-y: auto;
+}
+
+.contentWrapper {
+  max-width: 783px;
   width: 100%;
-  max-width: 1184px;
-  margin: 32px auto 48px;
-  border-radius: 24px;
-  overflow: hidden;
-  isolation: isolate;
+  margin: 0 auto;
 }
 
-.heroImageWrapper {
-  position: relative;
-  width: 100%;
-  height: 520px;
-}
-
-.heroImage {
-  object-fit: cover;
-}
-
-.heroGradient {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    90deg,
-    rgba(16, 24, 40, 0.7) 0%,
-    rgba(16, 24, 40, 0.1) 55%,
-    rgba(16, 24, 40, 0) 100%
-  );
-}
-
-.heroContent {
-  position: absolute;
-  inset: 0;
+.textWrapper {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding-left: 80px;
-  max-width: 560px;
-  color: #ffffff;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 40px;
+  width: 100%;
 }
 
 .heroTitle {
-  font-size: 48px;
-  line-height: 1.1;
   font-weight: 700;
-  margin: 0 0 16px;
+  font-size: 60px;
+  line-height: 1.2;
+  text-align: center;
+  color: var(--white);
 }
 
 .heroSubtitle {
-  margin: 0 0 32px;
-  font-size: 18px;
-  line-height: 1.5;
-  color: #e5e7eb;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 1.33;
+  text-align: center;
+  color: var(--white);
 }
 
 .heroCta {
-  width: 220px;
-  padding: 14px 24px;
-  border-radius: 12px;
-  background-color: var(--color-primary);
-  font-size: 16px;
-  font-weight: 600;
+  display: block;
+  margin: 0 auto;
+  max-width: 276px;
+  width: 100%;
   text-align: center;
-  color: #ffffff;
-  transition: background-color 0.2s ease;
+  padding: 12px 0;
+  border-radius: 12px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--white);
+  background-color: var(--button);
 }
 
 .heroCta:hover {
-  background-color: var(--color-primary-hover);
+  background-color: var(--button-hover);
 }

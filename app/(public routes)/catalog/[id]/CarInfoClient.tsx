@@ -17,6 +17,7 @@ interface Props {
 export function CarInfoClient({ id }: Props) {
   const { data, isLoading, isError, error } = useQuery<Car>({
     queryKey: ["car", id],
+    enabled: Boolean(id),
     queryFn: async () => {
       const { data } = await clientApi.get<Car>(`/cars/${id}`);
       return data;

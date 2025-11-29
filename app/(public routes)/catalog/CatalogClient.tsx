@@ -1,8 +1,8 @@
 "use client";
 
 import styles from "./CatalogPage.module.css";
-import { useState, useEffect } from "react";
-import { useQuery, keepPreviousData } from "@tanstack/react-query";
+import { useState, useEffect, useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { clientApi } from "@/lib/api/clientApi";
 import type { CarsResponse } from "@/types/car";
 import { Filters } from "@/components/Filters/Filters";
@@ -14,50 +14,52 @@ import { useCarStore } from "@/lib/api/store/useCarsStore";
 
 export function CatalogClient() {
   const { filters } = useCarStore();
+
   const [page, setPage] = useState(1);
   const [carsAcc, setCarsAcc] = useState<CarsResponse | null>(null);
 
-  const queryKey = ["cars", { filters, page }];
+  const queryKey = useMemo(
+    () => ["cars", { filters, page }] as const,
+    [filters, page]
+  );
 
-  const { data, isLoading, isError, refetch, isFetching, error } =
-    useQuery<CarsResponse>({
-      queryKey,
-      queryFn: async () => {
-        const params = new URLSearchParams();
-        if (filters.brand) params.set("brand", filters.brand);
-        if (filters.rentalPrice) params.set("rentalPrice", filters.rentalPrice);
-        if (filters.minMileage) params.set("minMileage", filters.minMileage);
-        if (filters.maxMileage) params.set("maxMileage", filters.maxMileage);
-        params.set("limit", "12");
-        params.set("page", String(page));
+  const { data, isLoading, isError, error, refetch, isFetching } = useQuery<
+    CarsResponse,
+    Error
+  >({
+    queryKey,
+    queryFn: async () => {
+      const params = new URLSearchParams();
 
-        const { data } = await clientApi.get<CarsResponse>("/cars", {
-          params,
-        });
-        return data;
-      },
-      placeholderData: keepPreviousData,
-    });
+      if (filters.brand) params.set("brand", filters.brand);
+      if (filters.rentalPrice) params.set("rentalPrice", filters.rentalPrice);
+      if (filters.minMileage) params.set("minMileage", filters.minMileage);
+      if (filters.maxMileage) params.set("maxMileage", filters.maxMileage);
 
-  useEffect(() => {
-    setPage(1);
-    setCarsAcc(null);
-  }, [
-    filters.brand,
-    filters.rentalPrice,
-    filters.minMileage,
-    filters.maxMileage,
-  ]);
+      params.set("limit", "12");
+      params.set("page", String(page));
+
+      const { data } = await clientApi.get<CarsResponse>("/cars", {
+        params,
+      });
+      return data;
+    },
+    staleTime: 1000 * 60 * 5,
+  });
 
   useEffect(() => {
     if (!data) return;
+    Promise.resolve().then(() => {
+      setCarsAcc((prev): CarsResponse | null => {
+        if (!prev || page === 1) {
+          return data;
+        }
 
-    setCarsAcc((prev) => {
-      if (!prev || page === 1) return data;
-      return {
-        ...data,
-        cars: [...prev.cars, ...data.cars],
-      };
+        return {
+          ...data,
+          cars: [...prev.cars, ...data.cars],
+        };
+      });
     });
   }, [data, page]);
 
@@ -81,10 +83,8 @@ export function CatalogClient() {
 
         {isLoading && !carsAcc && <Loader />}
 
-        {isError && !isLoading && (
-          <ErrorMessage
-            text={error instanceof Error ? error.message : undefined}
-          />
+        {isError && (
+          <ErrorMessage text={error?.message ?? "Something went wrong"} />
         )}
 
         {!isLoading && !isError && cars.length === 0 && <MessageNoCars />}
